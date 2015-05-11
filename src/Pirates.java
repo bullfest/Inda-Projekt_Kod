@@ -9,13 +9,13 @@ public class Pirates {
     private static ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
 
     public static void main(String[] args) throws InterruptedException{
-        Window window = new Window(700, 700, new KeyListener());
+        Window window = new Window(1700, 1000, new KeyListener());
 
-        Ship ship1 = new Ship(new Point(50,50),pressedKeys);
-        Ship ship2 = new Ship(new Point(100,100),pressedKeys);
+        Ship ship1 = new Ship(new Point(50,50),pressedKeys,new int[] {});
+        Ship ship2 = new Ship(new Point(100,100),pressedKeys,new int[] {});
 
-		double timeDiff;
-		double lastTime = System.currentTimeMillis(); // System.currentTimeMillis() returns a long
+		long timeDiff;
+		long lastTime = System.currentTimeMillis(); // System.currentTimeMillis() returns a long
 
         window.add(ship1);
         ship1.setAngle(15);
@@ -24,9 +24,10 @@ public class Pirates {
         for (int i = 0; i < 360; i++) {
 			// First loop iteration might be strange if the initial value of lastTime is wrong
 			timeDiff = System.currentTimeMillis() - lastTime;
-			lastTime = System.currentTimeMillis()
+			lastTime = System.currentTimeMillis();
             ship1.setAngle(i);
-            ship2.setAngle(-i);
+            ship2.update(timeDiff);
+            ship2.setAngle(i);
             window.repaint();
             Thread.sleep(10);
         }
@@ -47,7 +48,7 @@ public class Pirates {
         @Override
         public void keyReleased(KeyEvent e) {
 			while (pressedKeys.contains(e.getKeyCode())) {
-				pressedKeys.remove(e.getKeyCode());
+				pressedKeys.remove((Integer)e.getKeyCode());
 			}
         }
     }
