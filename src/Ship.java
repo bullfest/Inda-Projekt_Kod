@@ -3,7 +3,15 @@
  */
 public class Ship extends Entity {
 
-        public Ship(Point p){
-            super(p, "resources/pictures/ship.png");
-        }
+    public Ship(Point p){
+        super(p, "resources/pictures/ship.png");
+    }
+    
+    public void update(double timeDiff) {
+		//TODO
+	}
+    
+    public void kill() {
+		//TODO
+    }
 }
