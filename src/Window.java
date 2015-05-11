@@ -21,6 +21,10 @@ public class Window extends JFrame {
         frame.add(drawable);
     }
 
+    public void remove(Drawable drawable) {
+        frame.remove(drawable);
+    }
+
     class Frame extends JPanel {
         HashSet<Drawable> drawables = new HashSet<Drawable>();
         Frame() {
