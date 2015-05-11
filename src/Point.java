@@ -30,9 +30,12 @@ public class Point extends Vector {
         });
         setData(rotate.multiply(this).getData());
     }
+    
+    public double norm() {
+		return Math.sqrt(getX()*getX()+getY()*getY());
+	}
 
     public void normalize() {
-        double norm = Math.sqrt(getX()*getX()+getY()*getY());
-        setData(multiply(norm).getData());
+        setData(multiply(1/norm()).getData());
     }
 }
