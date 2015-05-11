@@ -14,11 +14,17 @@ public class Pirates {
         Ship ship1 = new Ship(new Point(50,50),pressedKeys);
         Ship ship2 = new Ship(new Point(100,100),pressedKeys);
 
+		double timeDiff;
+		double lastTime = System.currentTimeMillis(); // System.currentTimeMillis() returns a long
+
         window.add(ship1);
         ship1.setAngle(15);
         ship2.setAngle(90);
         window.add(ship2);
         for (int i = 0; i < 360; i++) {
+			// First loop iteration might be strange if the initial value of lastTime is wrong
+			timeDiff = System.currentTimeMillis() - lastTime;
+			lastTime = System.currentTimeMillis()
             ship1.setAngle(i);
             ship2.setAngle(-i);
             window.repaint();
