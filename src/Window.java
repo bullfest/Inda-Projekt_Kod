@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,8 +11,9 @@ import java.util.Set;
 public class Window extends JFrame {
     Frame frame = new Frame();
 
-    public Window(int xSize, int ySize) {
+    public Window(int xSize, int ySize,KeyListener listener) {
         add(frame);
+        frame.addKeyListener(listener);
         setSize(xSize,ySize);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
