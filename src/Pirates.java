@@ -1,8 +1,5 @@
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Alexander on 2015-05-08.
@@ -14,10 +11,11 @@ public class Pirates {
     public static void main(String[] args) throws InterruptedException{
         Window window = new Window(700, 700, new KeyListener());
 
-        Ship ship1 = new Ship(new Point(50,50));
+        Ship ship1 = new Ship(new Point(50,50),pressedKeys);
+        Ship ship2 = new Ship(new Point(100,100),pressedKeys);
+
         window.add(ship1);
         ship1.setAngle(15);
-        Ship ship2 = new Ship(new Point(100,100));
         ship2.setAngle(90);
         window.add(ship2);
         for (int i = 0; i < 360; i++) {

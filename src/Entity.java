@@ -9,7 +9,7 @@ public abstract class Entity extends Drawable {
     
     public abstract boolean isColliding(Entity e);
     
-    //collides()?
+    //collidedWith()?
     
     public abstract void update(double timeDiff);
     
