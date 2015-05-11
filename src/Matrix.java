@@ -51,19 +51,16 @@ public class Matrix {
      *
      * @param M The matrix to add to this
      * @param k The coefficient for this matrix
-     * @return this + k*M
      */
-    public Matrix add(Matrix M, double k) {
+    public void add(Matrix M, double k) {
         if (M.getCols() != this.getCols() || M.getRows() != this.getRows())
             throw new IllegalArgumentException("Matrices has to have the same dimensions.");
-        Matrix res = new Matrix(getCols(),getRows());
         for (int i = 0; i < data.length; i++) {
             double[] row = data[i];
             for (int j = 0; j < row.length; j++) {
-                res.setElem(i,j,data[i][j] + k*M.data[i][j]);
+                data[i][j] += k*M.data[i][j];
             }
         }
-        return res;
     }
 
     /**
@@ -81,8 +78,9 @@ public class Matrix {
             for (int j = 0; j < res.getCols(); j++) {
                 double sum = 0;
                 for (int k = 0; k < getCols(); k++) {
-                    sum += data[i][k]*data[k][j];
+                    sum += data[i][k]*M.data[k][j];
                 }
+                res.setElem(i,j,sum);
             }
         }
         return res;
