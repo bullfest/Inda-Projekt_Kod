@@ -2,8 +2,12 @@
  * Created by Alexander on 2015-05-10.
  */
 public class Point extends Vector {
-    public Point(int x, int y) {
+    public Point(double x, double y) {
         super(new double[]{x,y});
+    }
+
+    public Point(Matrix m) {
+        this(m.getElem(0,0),m.getElem(1,0));
     }
 
     public int getX() {
@@ -15,7 +19,7 @@ public class Point extends Vector {
     }
 
     public void add(Point p) {
-        setData(add(p, 1).getData());
+        add(p, 1);
     }
 
     /**
