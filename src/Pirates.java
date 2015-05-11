@@ -42,7 +42,9 @@ public class Pirates {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            pressedKeys.remove(e.getKeyCode());
+			while (pressedKeys.contains(e.getKeyCode())) {
+				pressedKeys.remove(e.getKeyCode());
+			}
         }
     }
 }
