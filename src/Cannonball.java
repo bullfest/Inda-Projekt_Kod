@@ -17,9 +17,15 @@ public class Cannonball extends Entity {
 		super.setAngle(angle);
 		velocity.rotate(angle);
 	}
-    
+
+    @Override
+    public boolean isColliding(Entity e) {
+        //ToDo: Implement
+        return false;
+    }
+
     public void update(double timeDiff) {
-		position = position.add(velocity, timeDiff);
+		getPos().add(velocity, timeDiff);
 	}
     
     public void kill(){}
