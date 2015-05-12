@@ -11,7 +11,7 @@ public abstract class Entity extends Drawable {
     
     //collidedWith()?
     
-    public abstract void update(double timeDiff);
+    public abstract void update(int timeDiff);
     
     public abstract void kill();
 }

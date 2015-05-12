@@ -24,7 +24,7 @@ public class Cannonball extends Entity {
         return false;
     }
 
-    public void update(double timeDiff) {
+    public void update(int timeDiff) {
 		getPos().add(velocity, timeDiff);
 	}
     
