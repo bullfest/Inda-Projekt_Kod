@@ -8,21 +8,21 @@ public class Ship extends Entity {
 
     private Point velocity = new Point(0,0);
     private ArrayList<Integer> pressedKeys;
-
-    private final int MAX_SPEED = 4;
-    private final double ACCELERATION_PER_SECOND = 1.5, ROTATION_PER_SECOND = 60/*Degrees*/;
+    private long shootCooldown;
+    
+    private final double ACCELERATION_PER_SECOND = 2, ROTATION_PER_SECOND = 60/*Degrees*/;
 
     // {Up,Down,left,right,shoot}
     List<Integer> keys;
 
     public Ship(Point p, ArrayList<Integer> pressedKeys,List<Integer> keys){
-        super(p, "resources/pictures/ship.png");
+        super(p, "../resources/pictures/ship.png");
         this.pressedKeys = pressedKeys;
         this.keys = keys;
     }
     
     public void update(int timeDiff) {
-        velocity.multiply(1-0.5*(timeDiff/1000.0));
+        velocity.multiply(1-0.75*(timeDiff/1000.0));
         Point acceleration = new Point(0,0);
 
         for(int i = 0; i < pressedKeys.size();i++) {
@@ -32,19 +32,15 @@ public class Ship extends Entity {
             if (index == 1) // Down
                 acceleration.add(new Point(0,ACCELERATION_PER_SECOND));
             if (index == 2) // Left
-                setAngle(getAngle()+ROTATION_PER_SECOND*timeDiff/1000.0);
-            if (index == 3) // Right
                 setAngle(getAngle()-ROTATION_PER_SECOND*timeDiff/1000.0);
+            if (index == 3) // Right
+                setAngle(getAngle()+ROTATION_PER_SECOND*timeDiff/1000.0);
             if (index == 4) // Shoot
                 shoot(timeDiff);
         }
         acceleration.rotate(getAngle());
         velocity.add(acceleration,timeDiff/1000.0);
-
-        if (velocity.norm()>MAX_SPEED) {
-            velocity.normalize();
-            velocity.setData(velocity.multiply(MAX_SPEED).getData());
-        }
+        
         Point center = getCenterPos();
         center.add(velocity);
         setCenter(center);
@@ -52,7 +48,8 @@ public class Ship extends Entity {
 	}
 
     private void shoot(int timeDiff) {
-
+		Cannonball cannonball = new Cannonball(getCenterPos(),getAngle()-90);
+		Pirates.addCannonball(cannonball);
     }
 
     public boolean isColliding(Entity e) {

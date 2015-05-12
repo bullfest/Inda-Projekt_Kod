@@ -7,8 +7,8 @@ public class Cannonball extends Entity {
 	private Point velocity;
 	
     public Cannonball(Point p, double angle) {
-        super(p, "resources/pictures/cannonball.png");
-        velocity = new Point(4, 0); // Length of vector is not yet decided and can change
+        super(p, "../resources/pictures/cannonball.png");
+        velocity = new Point(0.5, 0); // Length of vector is not yet decided and can change
         setAngle(angle);
     }
     

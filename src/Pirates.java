@@ -8,12 +8,15 @@ import java.util.Arrays;
 public class Pirates {
 
     private static ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
+    private static ArrayList<Cannonball> cannonballs = new ArrayList<Cannonball>();
+    private static Window window;
 
     public static void main(String[] args) throws InterruptedException{
-        Window window = new Window(1700, 1000, new KeyListener());
-        Integer[] keysShip1 = new Integer[] {87,83,65,68,(int)'v'};
+        window = new Window(1700, 1000, new KeyListener());
+        Integer[] keysShip1 = new Integer[] {87,83,65,68,86};
+        Integer[] keysShip2 = new Integer[] {38,40,37,39,96};
         Ship ship1 = new Ship(new Point(50,50),pressedKeys,Arrays.asList(keysShip1));
-        Ship ship2 = new Ship(new Point(100,100),pressedKeys,Arrays.asList(keysShip1));
+        Ship ship2 = new Ship(new Point(100,100),pressedKeys,Arrays.asList(keysShip2));
 
 		long timeDiff;
 		long lastTime = System.currentTimeMillis(); // System.currentTimeMillis() returns a long
@@ -28,10 +31,20 @@ public class Pirates {
 			lastTime = System.currentTimeMillis();
             ship1.update((int)timeDiff);
             ship2.update((int)timeDiff); //each loop shouldn't take more time than an int can hold
+            
+            for(Cannonball c:cannonballs) {
+				c.update((int)timeDiff);
+			}
+            
             window.repaint();
             Thread.sleep(10);
         }
     }
+    
+    public static void addCannonball(Cannonball c) {
+		cannonballs.add(c);
+		window.add(c);
+	}
 
     static class KeyListener implements java.awt.event.KeyListener {
 
@@ -42,6 +55,7 @@ public class Pirates {
 
         @Override
         public void keyPressed(KeyEvent e) {
+			System.out.println(e.getKeyCode());
             if (!pressedKeys.contains(e.getKeyCode()))
                 pressedKeys.add(e.getKeyCode());
         }
