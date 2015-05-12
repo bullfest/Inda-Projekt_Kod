@@ -24,6 +24,17 @@ public abstract class Drawable {
         return position;
     }
 
+    public Point getCenterPos() {
+        Point center = new Point(image.getWidth()/2,image.getHeight()/2);
+        center.add(position);
+        return center;
+    }
+
+    public void setCenter(Point center) {
+        center.add(new Point(image.getWidth()/2,image.getHeight()/2),-1); //center-(leftCornerToCenterVector)
+        position = center;
+    }
+
     public void setPos(Point p) {
         position = p;
     }
