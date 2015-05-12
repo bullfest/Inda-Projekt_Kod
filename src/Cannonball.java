@@ -12,8 +12,12 @@ public class Cannonball extends Entity {
         setAngle(angle);
     }
     
-    public void setAngle(double angle) {
-		
+    /**
+     * Sets the angle of travel.
+     * 
+     * @param angle The angle that the cannonball will have.
+     */
+    public void setAngle(double angle) {	
 		super.setAngle(angle);
 		velocity.rotate(angle);
 	}

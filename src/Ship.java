@@ -8,9 +8,10 @@ public class Ship extends Entity {
 
     private Point velocity = new Point(0,0);
     private ArrayList<Integer> pressedKeys;
-    private long shootCooldown;
+    private long lastShot;
     
-    private final double ACCELERATION_PER_SECOND = 2, ROTATION_PER_SECOND = 60/*Degrees*/;
+    private final double ACCELERATION_PER_SECOND = 2, ROTATION_PER_SECOND = 60,/*Degrees*/
+							SHOT_COOLDOWN = 700;
 
     // {Up,Down,left,right,shoot}
     List<Integer> keys;
@@ -36,7 +37,7 @@ public class Ship extends Entity {
             if (index == 3) // Right
                 setAngle(getAngle()+ROTATION_PER_SECOND*timeDiff/1000.0);
             if (index == 4) // Shoot
-                shoot(timeDiff);
+				shoot();
         }
         acceleration.rotate(getAngle());
         velocity.add(acceleration,timeDiff/1000.0);
@@ -46,10 +47,17 @@ public class Ship extends Entity {
         setCenter(center);
 
 	}
-
-    private void shoot(int timeDiff) {
-		Cannonball cannonball = new Cannonball(getCenterPos(),getAngle()-90);
-		Pirates.addCannonball(cannonball);
+	
+	/**
+	 * Shoots a cannonball in the ships direction. A cannonball can only
+	 * be shot once every 700 ms (SHOOT_COOLDOWN)
+	 */
+    private void shoot() {
+		if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
+			lastShot = System.currentTimeMillis();
+			Cannonball cannonball = new Cannonball(getCenterPos(),getAngle()-90);
+			Pirates.addCannonball(cannonball);
+		}
     }
 
     public boolean isColliding(Entity e) {
