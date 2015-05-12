@@ -35,6 +35,36 @@ public abstract class Drawable {
         position = center;
     }
 
+    //Methods for getting corners of the current drawn picture
+
+    public Point getTopLeftPos() {
+        Point topLeft = new Point(-image.getWidth()/2,-image.getHeight()/2);
+        topLeft.rotate(angle);
+        topLeft.add(getCenterPos());
+        return topLeft;
+    }
+
+    public Point getTopRightPos() {
+        Point topRight = new Point(image.getWidth()/2,-image.getHeight()/2);
+        topRight.rotate(angle);
+        topRight.add(getCenterPos());
+        return topRight;
+    }
+
+    public Point getBottomLeftPos() {
+        Point bottomLeft = new Point(-image.getWidth()/2,image.getHeight()/2);
+        bottomLeft.rotate(angle);
+        bottomLeft.add(getCenterPos());
+        return bottomLeft;
+    }
+
+    public Point getBottomRightPos() {
+        Point bottomRight = new Point(image.getWidth()/2,image.getHeight()/2);
+        bottomRight.rotate(angle);
+        bottomRight.add(getCenterPos());
+        return bottomRight;
+    }
+
     public void setPos(Point p) {
         position = p;
     }
