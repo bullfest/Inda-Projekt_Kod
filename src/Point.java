@@ -39,6 +39,14 @@ public class Point extends Vector {
 		return Math.sqrt(getX()*getX()+getY()*getY());
 	}
 
+    public Point toBasis(Point p1, Point p2) {
+        Matrix transMatrix = new Matrix(new double[][] {
+                {p1.getX(), p2.getX()},
+                {p1.getY(), p2.getY()}
+        });
+        return new Point(transMatrix.multiply(this));
+    }
+
     public void normalize() {
         setData(multiply(1/norm()).getData());
     }
