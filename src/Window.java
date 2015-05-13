@@ -60,7 +60,7 @@ public class Window extends JFrame {
                         d.getPos().getY()+d.getImage().getHeight()/2);
 
                 g2d.transform(trans);
-                g2d.drawImage(d.getImage(),null, d.getPos().getX(), d.getPos().getY());
+                g2d.drawImage(d.getImage(),null, (int)d.getPos().getX(), (int)d.getPos().getY());
                 g2d.setTransform(backup); // restore previous transform
             }
         }

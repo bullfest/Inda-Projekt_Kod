@@ -10,12 +10,12 @@ public class Point extends Vector {
         this(m.getElem(0,0),m.getElem(1,0));
     }
 
-    public int getX() {
-        return (int)get(0);
+    public double getX() {
+        return get(0);
     }
 
-    public int getY() {
-        return (int)get(1);
+    public double getY() {
+        return get(1);
     }
 
     public void add(Point p) {
@@ -49,5 +49,10 @@ public class Point extends Vector {
 
     public void normalize() {
         setData(multiply(1/norm()).getData());
+    }
+
+    @Override
+    public String toString() {
+        return "Point: (" + getX() + ", " + getY() + ")";
     }
 }
