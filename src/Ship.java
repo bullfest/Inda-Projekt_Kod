@@ -17,7 +17,7 @@ public class Ship extends Entity {
     List<Integer> keys;
 
     public Ship(Point p, ArrayList<Integer> pressedKeys,List<Integer> keys){
-        super(p, "../resources/pictures/ship.png");
+        super(p,  "resources/pictures/ship.png");
         this.pressedKeys = pressedKeys;
         this.keys = keys;
     }
@@ -29,9 +29,9 @@ public class Ship extends Entity {
         for(int i = 0; i < pressedKeys.size();i++) {
             int index = keys.indexOf(pressedKeys.get(i));
             if (index == 0) // Up
-                acceleration.add(new Point(0,-ACCELERATION_PER_SECOND));
+                acceleration.add(new Point(ACCELERATION_PER_SECOND,0));
             if (index == 1) // Down
-                acceleration.add(new Point(0,ACCELERATION_PER_SECOND));
+                acceleration.add(new Point(-ACCELERATION_PER_SECOND,0));
             if (index == 2) // Left
                 setAngle(getAngle()-ROTATION_PER_SECOND*timeDiff/1000.0);
             if (index == 3) // Right
@@ -47,21 +47,46 @@ public class Ship extends Entity {
         setCenter(center);
 
 	}
-	
-	/**
-	 * Shoots a cannonball in the ships direction. A cannonball can only
-	 * be shot once every 700 ms (SHOOT_COOLDOWN)
-	 */
+
+    public void collideWith(Entity e){}
+
     private void shoot() {
-		if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
-			lastShot = System.currentTimeMillis();
-			Cannonball cannonball = new Cannonball(getCenterPos(),getAngle()-90);
-			Pirates.addCannonball(cannonball);
-		}
+        if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
+            lastShot = System.currentTimeMillis();
+            Cannonball cannonball = new Cannonball(getCenterPos(),getAngle(),this);
+            Pirates.addCannonball(cannonball);
+        }
     }
 
     public boolean isColliding(Entity e) {
-        //ToDo: Implement
+        double dx = (getCenterPos().getX()-e.getCenterPos().getX());
+        double dy = (getCenterPos().getY()-e.getCenterPos().getY());
+        if (dx*dx + dy*dy > 2500) //distance > 50
+            return false; //Way too big distance, no risk of collision
+
+        Point forward = new Point(1,0);
+        forward.rotate(angle);
+
+        Point perpToForward = new Point(-forward.getY(),forward.getX());
+
+        //Change basis to make the ship "straight"
+        Point myTopLeft = getTopLeftPos().toBasis(forward,perpToForward);
+        //System.out.println(myTopLeft);
+        //System.out.println(getTopRightPos().toBasis(forward,new Point(-forward.getY(), forward.getX())));
+        //System.out.println(getBottomLeftPos().toBasis(forward,new Point(-forward.getY(), forward.getX())));
+        Point myBottomRight = getBottomRightPos().toBasis(forward,perpToForward);
+        //System.out.println(myBottomRight);
+
+        List<Point> othersPoints = e.getCollisionPoints();
+
+        for (Point p : othersPoints) {
+            if ((p.getX()> myTopLeft.getX() && p.getX() < myBottomRight.getX())
+                    || (p.getX() < myTopLeft.getX() && p.getX() > myBottomRight.getX()))
+                if ((p.getY() > myTopLeft.getY() && p.getY() < myBottomRight.getY())
+                        || (p.getY() < myTopLeft.getY() && p.getY() > myBottomRight.getY()))
+                    return true;
+        }
+
         return false;
     }
     
