@@ -29,7 +29,9 @@ public class Cannonball extends Entity {
     }
 
     public void update(int timeDiff) {
-		getPos().add(velocity, timeDiff);
+        Point center = getCenterPos();
+        center.add(velocity, timeDiff);
+		setCenter(center);
 	}
     
     public void kill(){}
