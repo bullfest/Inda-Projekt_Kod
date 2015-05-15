@@ -35,7 +35,7 @@ public class Pirates {
             for(Cannonball c:cannonballs) {
 				c.update((int)timeDiff);
 			}
-            
+
             window.repaint();
             Thread.sleep(10);
         }
@@ -55,7 +55,6 @@ public class Pirates {
 
         @Override
         public void keyPressed(KeyEvent e) {
-			System.out.println(e.getKeyCode());
             if (!pressedKeys.contains(e.getKeyCode()))
                 pressedKeys.add(e.getKeyCode());
         }
