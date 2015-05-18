@@ -78,11 +78,13 @@ public class Ship
         List<Point> othersPoints = e.getCollisionPoints();
 
         for (Point p : othersPoints) {
-            if ((p.getX()> myTopLeft.getX() && p.getX() < myBottomRight.getX())
+            p = p.toBasis(forward,perpToForward);
+            if (((p.getX()> myTopLeft.getX() && p.getX() < myBottomRight.getX())
                     || (p.getX() < myTopLeft.getX() && p.getX() > myBottomRight.getX()))
-                if ((p.getY() > myTopLeft.getY() && p.getY() < myBottomRight.getY())
-                        || (p.getY() < myTopLeft.getY() && p.getY() > myBottomRight.getY()))
-                    return true;
+                    &&
+                    ((p.getY() > myTopLeft.getY() && p.getY() < myBottomRight.getY())
+                    || (p.getY() < myTopLeft.getY() && p.getY() > myBottomRight.getY())))
+                return true;
         }
 
         return false;

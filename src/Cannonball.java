@@ -29,9 +29,17 @@ public class Cannonball
 		velocity.rotate(angle);
 	}
 
-    @Override
     public boolean isColliding(Collideable e) {
-        //ToDo: Implement
+
+        //If distance between e's collisionspoints and cannonballs center ~<7
+        List<Point> othersPoints = e.getCollisionPoints();
+        for (Point p : othersPoints) {
+            double dx = p.getX()-getCenterPos().getX();
+            double dy = p.getY()-getCenterPos().getY();
+            if (dx*dx + dy*dy < 50)
+                return true;
+        }
+
         return false;
     }
 
@@ -39,6 +47,12 @@ public class Cannonball
         Point center = getCenterPos();
         center.add(velocity, timeDiff);
 		setCenter(center);
+        if (center.getX()>Pirates.WINDOW_WIDTH+image.getWidth()
+                || center.getX() < -image.getWidth()
+                || center.getY() > Pirates.WINDOW_HEIGHT+image.getHeight()
+                || center.getY() < -image.getHeight())
+            Pirates.remove(this);
+
 	}
 
     @Override
