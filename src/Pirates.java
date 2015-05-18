@@ -10,9 +10,10 @@ public class Pirates {
     private static ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
     private static ArrayList<Cannonball> cannonballs = new ArrayList<Cannonball>();
     private static Window window;
+    public static final int WINDOW_HEIGHT = 1000, WINDOW_WIDTH = 1700;
 
     public static void main(String[] args) throws InterruptedException{
-        window = new Window(1700, 1000, new KeyListener());
+        window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, new KeyListener());
         Integer[] keysShip1 = new Integer[] {87,83,65,68,86};
         Integer[] keysShip2 = new Integer[] {38,40,37,39,96};
         Ship ship1 = new Ship(new Point(50,50),pressedKeys,Arrays.asList(keysShip1));
