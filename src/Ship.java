@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Alexander on 2015-05-08.
+ * Represents ships in the game.
  */
 public class Ship extends Entity {
 
@@ -26,18 +26,18 @@ public class Ship extends Entity {
         velocity.multiply(1-0.75*(timeDiff/1000.0));
         Point acceleration = new Point(0,0);
 
-        for(int i = 0; i < pressedKeys.size();i++) {
-            int index = keys.indexOf(pressedKeys.get(i));
+        for (Integer pressedKey : pressedKeys) {
+            int index = keys.indexOf(pressedKey);
             if (index == 0) // Up
-                acceleration.add(new Point(ACCELERATION_PER_SECOND,0));
+                acceleration.add(new Point(ACCELERATION_PER_SECOND, 0));
             if (index == 1) // Down
-                acceleration.add(new Point(-ACCELERATION_PER_SECOND,0));
+                acceleration.add(new Point(-ACCELERATION_PER_SECOND, 0));
             if (index == 2) // Left
-                setAngle(getAngle()-ROTATION_PER_SECOND*timeDiff/1000.0);
+                setAngle(getAngle() - ROTATION_PER_SECOND * timeDiff / 1000.0);
             if (index == 3) // Right
-                setAngle(getAngle()+ROTATION_PER_SECOND*timeDiff/1000.0);
+                setAngle(getAngle() + ROTATION_PER_SECOND * timeDiff / 1000.0);
             if (index == 4) // Shoot
-				shoot();
+                shoot();
         }
         acceleration.rotate(getAngle());
         velocity.add(acceleration,timeDiff/1000.0);
@@ -71,11 +71,7 @@ public class Ship extends Entity {
 
         //Change basis to make the ship "straight"
         Point myTopLeft = getTopLeftPos().toBasis(forward,perpToForward);
-        //System.out.println(myTopLeft);
-        //System.out.println(getTopRightPos().toBasis(forward,new Point(-forward.getY(), forward.getX())));
-        //System.out.println(getBottomLeftPos().toBasis(forward,new Point(-forward.getY(), forward.getX())));
         Point myBottomRight = getBottomRightPos().toBasis(forward,perpToForward);
-        //System.out.println(myBottomRight);
 
         List<Point> othersPoints = e.getCollisionPoints();
 
