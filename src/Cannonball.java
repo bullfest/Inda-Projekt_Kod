@@ -1,8 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a cannonball entity.
  * 
  */
-public class Cannonball extends Entity {
+public class Cannonball
+        extends Entity
+        implements Collideable{
 	
 	private Point velocity;
     private Ship shotBy;
@@ -25,7 +30,7 @@ public class Cannonball extends Entity {
 	}
 
     @Override
-    public boolean isColliding(Entity e) {
+    public boolean isColliding(Collideable e) {
         //ToDo: Implement
         return false;
     }
@@ -37,8 +42,18 @@ public class Cannonball extends Entity {
 	}
 
     @Override
-    public void collideWith(Entity e) {
+    public void collideWith(Collideable e) {
         //TODO
+    }
+
+    @Override
+    public List<Point> getCollisionPoints() {
+        List<Point> collisionPoints = new ArrayList<Point>();
+        collisionPoints.add(getBottomLeftPos());
+        collisionPoints.add(getBottomRightPos());
+        collisionPoints.add(getTopLeftPos());
+        collisionPoints.add(getTopRightPos());
+        return collisionPoints;
     }
 
     public void kill(){}

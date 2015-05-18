@@ -5,7 +5,10 @@ import java.util.List;
 /**
  * Created by Alexander on 2015-05-08.
  */
-public class Island extends Drawable {
+public class Island
+        extends Drawable
+        implements Collideable {
+
     private static final int NUMBER_OF_NODES = 20;
     private static final int MAX_ISLAND_RADIUS = 100;
     private ArrayList<Point> hull = new ArrayList<Point>();
@@ -140,4 +143,13 @@ public class Island extends Drawable {
         return new Point(xSum/hull.size(),ySum/hull.size());
     }
 
+    @Override
+    public boolean isColliding(Collideable e) {
+        return false;
+    }
+
+    @Override
+    public void collideWith(Collideable e) {
+        //TODO: Destroy Cannonballs and damage + bounce ships
+    }
 }

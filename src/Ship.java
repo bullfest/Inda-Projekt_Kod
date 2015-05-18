@@ -4,7 +4,9 @@ import java.util.List;
 /**
  * Represents ships in the game.
  */
-public class Ship extends Entity {
+public class Ship
+        extends Entity
+        implements Collideable {
 
     private Point velocity = new Point(0,0);
     private ArrayList<Integer> pressedKeys;
@@ -48,7 +50,7 @@ public class Ship extends Entity {
 
 	}
 
-    public void collideWith(Entity e){}
+    public void collideWith(Collideable e){}
 
     private void shoot() {
         if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
@@ -58,12 +60,12 @@ public class Ship extends Entity {
         }
     }
 
-    public boolean isColliding(Entity e) {
-        double dx = (getCenterPos().getX()-e.getCenterPos().getX());
+    public boolean isColliding(Collideable e) {
+        /*double dx = (getCenterPos().getX()-e.getCenterPos().getX());
         double dy = (getCenterPos().getY()-e.getCenterPos().getY());
         if (dx*dx + dy*dy > 2500) //distance > 50
             return false; //Way too big distance, no risk of collision
-
+        */
         Point forward = new Point(1,0);
         forward.rotate(angle);
 
@@ -88,5 +90,22 @@ public class Ship extends Entity {
     
     public void kill() {
 		//TODO
+    }
+
+    @Override
+    public ArrayList<Point> getCollisionPoints() {
+        ArrayList<Point> collisionPoints = new ArrayList<Point>();
+        Point pos = getPos();
+        int distanceBetween = 2;
+        for (double i = pos.getX(); i < pos.getX() + image.getWidth()+distanceBetween; i+=distanceBetween) {
+            for (double j = pos.getY(); j < pos.getY() + image.getHeight()+distanceBetween; j+=distanceBetween) {
+                if (i > pos.getX() + image.getWidth())
+                    i = pos.getX() + image.getWidth();
+                if (j > pos.getY() + image.getHeight())
+                    j = pos.getY() + image.getHeight();
+                collisionPoints.add(new Point(i,j));
+            }
+        }
+        return collisionPoints;
     }
 }
