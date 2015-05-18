@@ -6,6 +6,7 @@ import java.util.List;
  */
 public class Ship extends Entity {
 
+	private int hitPoints;
     private Point velocity = new Point(0,0);
     private ArrayList<Integer> pressedKeys;
     private long lastShot;
@@ -20,6 +21,7 @@ public class Ship extends Entity {
         super(p, "../resources/pictures/ship.png");
         this.pressedKeys = pressedKeys;
         this.keys = keys;
+		hitPoints  = 1000; // Initial value might change
     }
     
     public void update(int timeDiff) {
@@ -46,6 +48,7 @@ public class Ship extends Entity {
         center.add(velocity);
         setCenter(center);
 
+        resolveDamage();
 	}
 	
 	/**
@@ -59,10 +62,35 @@ public class Ship extends Entity {
 			Pirates.addCannonball(cannonball);
 		}
     }
+	
+	private void takeDamage() {
+		hitPoints = hitPoints - 100;
+	}
+	
+	//might be used to make damage more dynamic
+	private void takeDamage(int damage) {
+        hitPoints = hitPoints - damage;
+    }
+
+    public void resolveDamage() {
+        for (Entity e : collidedWith()) {
+            takeDamage();
+        }
+    }
 
     public boolean isColliding(Entity e) {
         //ToDo: Implement
         return false;
+    }
+
+    public ArrayList<Entity> collidedWith() {
+        ArrayList<Entity> collided = new ArrayList<>();
+        for (Cannonball c : Pirates.getCannonballs()) {
+            if (isColliding(c)) {
+                collided.add(c);
+            }
+        }
+        return collided;
     }
     
     public void kill() {

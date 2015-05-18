@@ -46,6 +46,10 @@ public class Pirates {
 		window.add(c);
 	}
 
+    public static ArrayList<Cannonball> getCannonballs() {
+        return cannonballs;
+    }
+
     static class KeyListener implements java.awt.event.KeyListener {
 
         @Override
