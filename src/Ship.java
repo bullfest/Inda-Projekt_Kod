@@ -2,9 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Alexander on 2015-05-08.
+ * Represents ships in the game.
  */
-public class Ship extends Entity {
+public class Ship
+        extends Entity
+        implements Collideable {
 
 	private int hitPoints;
     private Point velocity = new Point(0,0);
@@ -28,18 +30,18 @@ public class Ship extends Entity {
         velocity.multiply(1-0.75*(timeDiff/1000.0));
         Point acceleration = new Point(0,0);
 
-        for(int i = 0; i < pressedKeys.size();i++) {
-            int index = keys.indexOf(pressedKeys.get(i));
+        for (Integer pressedKey : pressedKeys) {
+            int index = keys.indexOf(pressedKey);
             if (index == 0) // Up
-                acceleration.add(new Point(ACCELERATION_PER_SECOND,0));
+                acceleration.add(new Point(ACCELERATION_PER_SECOND, 0));
             if (index == 1) // Down
-                acceleration.add(new Point(-ACCELERATION_PER_SECOND,0));
+                acceleration.add(new Point(-ACCELERATION_PER_SECOND, 0));
             if (index == 2) // Left
-                setAngle(getAngle()-ROTATION_PER_SECOND*timeDiff/1000.0);
+                setAngle(getAngle() - ROTATION_PER_SECOND * timeDiff / 1000.0);
             if (index == 3) // Right
-                setAngle(getAngle()+ROTATION_PER_SECOND*timeDiff/1000.0);
+                setAngle(getAngle() + ROTATION_PER_SECOND * timeDiff / 1000.0);
             if (index == 4) // Shoot
-				shoot();
+                shoot();
         }
         acceleration.rotate(getAngle());
         velocity.add(acceleration,timeDiff/1000.0);
@@ -51,7 +53,7 @@ public class Ship extends Entity {
         resolveDamage();
 	}
 
-    public void collideWith(Entity e){}
+    public void collideWith(Collideable e){}
 
     private void shoot() {
         if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
@@ -76,12 +78,12 @@ public class Ship extends Entity {
         }
     }
 
-    public boolean isColliding(Entity e) {
-        double dx = (getCenterPos().getX()-e.getCenterPos().getX());
+    public boolean isColliding(Collideable e) {
+        /*double dx = (getCenterPos().getX()-e.getCenterPos().getX());
         double dy = (getCenterPos().getY()-e.getCenterPos().getY());
         if (dx*dx + dy*dy > 2500) //distance > 50
             return false; //Way too big distance, no risk of collision
-
+        */
         Point forward = new Point(1,0);
         forward.rotate(angle);
 
@@ -89,20 +91,18 @@ public class Ship extends Entity {
 
         //Change basis to make the ship "straight"
         Point myTopLeft = getTopLeftPos().toBasis(forward,perpToForward);
-        //System.out.println(myTopLeft);
-        //System.out.println(getTopRightPos().toBasis(forward,new Point(-forward.getY(), forward.getX())));
-        //System.out.println(getBottomLeftPos().toBasis(forward,new Point(-forward.getY(), forward.getX())));
         Point myBottomRight = getBottomRightPos().toBasis(forward,perpToForward);
-        //System.out.println(myBottomRight);
 
         List<Point> othersPoints = e.getCollisionPoints();
 
         for (Point p : othersPoints) {
-            if ((p.getX()> myTopLeft.getX() && p.getX() < myBottomRight.getX())
+            p = p.toBasis(forward,perpToForward);
+            if (((p.getX()> myTopLeft.getX() && p.getX() < myBottomRight.getX())
                     || (p.getX() < myTopLeft.getX() && p.getX() > myBottomRight.getX()))
-                if ((p.getY() > myTopLeft.getY() && p.getY() < myBottomRight.getY())
-                        || (p.getY() < myTopLeft.getY() && p.getY() > myBottomRight.getY()))
-                    return true;
+                    &&
+                    ((p.getY() > myTopLeft.getY() && p.getY() < myBottomRight.getY())
+                    || (p.getY() < myTopLeft.getY() && p.getY() > myBottomRight.getY())))
+                return true;
         }
 
         return false;
@@ -120,5 +120,22 @@ public class Ship extends Entity {
     
     public void kill() {
 		//TODO
+    }
+
+    @Override
+    public ArrayList<Point> getCollisionPoints() {
+        ArrayList<Point> collisionPoints = new ArrayList<Point>();
+        Point pos = getPos();
+        int distanceBetween = 2;
+        for (double i = pos.getX(); i < pos.getX() + image.getWidth()+distanceBetween; i+=distanceBetween) {
+            for (double j = pos.getY(); j < pos.getY() + image.getHeight()+distanceBetween; j+=distanceBetween) {
+                if (i > pos.getX() + image.getWidth())
+                    i = pos.getX() + image.getWidth();
+                if (j > pos.getY() + image.getHeight())
+                    j = pos.getY() + image.getHeight();
+                collisionPoints.add(new Point(i,j));
+            }
+        }
+        return collisionPoints;
     }
 }

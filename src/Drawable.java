@@ -1,4 +1,6 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +12,8 @@ public abstract class Drawable {
     Point position;
     double angle = 0;
     BufferedImage image;
+
+    public Drawable() {    }
 
     public Drawable(Point p, String imagePath) {
         position = p;
@@ -65,8 +69,24 @@ public abstract class Drawable {
         return bottomRight;
     }
 
-    public void setPos(Point p) {
-        position = p;
+    /**
+     * A method for drawing the drawable on the provided canvas
+     * Should be overrided if object isn't just a sprite
+     * @param g2d
+     */
+    public void draw(Graphics2D g2d) {
+
+        //Based this of something we found on Stackexchange
+        // http://gamedev.stackexchange.com/questions/62196/rotate-image-around-a-specified-origin
+        AffineTransform backup = g2d.getTransform();
+        AffineTransform trans = new AffineTransform();
+        trans.rotate(Math.toRadians(angle),
+                position.getX()+image.getWidth()/2, //Rotate around center of sprite.
+                position.getY()+image.getHeight()/2);
+
+        g2d.transform(trans);
+        g2d.drawImage(getImage(),null, (int)position.getX(), (int)position.getY());
+        g2d.setTransform(backup); // restore previous transform
     }
 
     public BufferedImage getImage() {

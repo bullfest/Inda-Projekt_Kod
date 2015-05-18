@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +28,7 @@ public class Window extends JFrame {
 
     class Frame extends JPanel {
         HashSet<Drawable> drawables = new HashSet<Drawable>();
+
         Frame() {
             setFocusable(true);
         }
@@ -50,18 +50,7 @@ public class Window extends JFrame {
             //Make a "snapshot" of the drawables set, to avoid concurrent modification exceptions while drawing.
             Set<Drawable> drawablesSnapshot = (Set<Drawable>)drawables.clone();
             for (Drawable d:drawablesSnapshot) {
-
-                //Based this of something we found on Stackexchange
-                    // http://gamedev.stackexchange.com/questions/62196/rotate-image-around-a-specified-origin
-                AffineTransform backup = g2d.getTransform();
-                AffineTransform trans = new AffineTransform();
-                trans.rotate(Math.toRadians(d.getAngle()),
-                        d.getPos().getX()+d.getImage().getWidth()/2, //Rotate around center of sprite.
-                        d.getPos().getY()+d.getImage().getHeight()/2);
-
-                g2d.transform(trans);
-                g2d.drawImage(d.getImage(),null, (int)d.getPos().getX(), (int)d.getPos().getY());
-                g2d.setTransform(backup); // restore previous transform
+                d.draw(g2d);
             }
         }
     }
