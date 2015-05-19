@@ -57,7 +57,15 @@ public class Cannonball
 
     @Override
     public void collideWith(Collideable e) {
-        //TODO
+        if (e.getClass().equals(Ship.class)) {
+            if (e.equals(shotBy)) // you can't be hit by your own bullets
+                return;
+            ((Ship) e).takeDamage(100);
+            Pirates.remove(this);
+        }
+        if (e.getClass().equals(Island.class)) {
+            Pirates.remove(this);
+        }
     }
 
     @Override

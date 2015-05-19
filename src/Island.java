@@ -150,6 +150,12 @@ public class Island
 
     @Override
     public void collideWith(Collideable e) {
-        //TODO: Destroy Cannonballs and damage + bounce ships
+        if (e.getClass().equals(Cannonball.class)) {
+            Pirates.remove((Cannonball)e);
+        } else if (e.getClass().equals(Ship.class)) {
+            Ship s = (Ship) e;
+            s.takeDamage(50);
+            //ToDo bounce ship
+        }
     }
 }

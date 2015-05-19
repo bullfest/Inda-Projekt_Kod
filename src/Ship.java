@@ -25,8 +25,13 @@ public class Ship
         this.keys = keys;
 		hitPoints  = 1000; // Initial value might change
     }
-    
+
+    /**
+     *
+     * @param timeDiff Time since the last frame was made.
+     */
     public void update(int timeDiff) {
+        //ToDo: make so that ship can't leave screen.
         velocity.multiply(1-0.75*(timeDiff/1000.0));
         Point acceleration = new Point(0,0);
 
@@ -49,11 +54,16 @@ public class Ship
         Point center = getCenterPos();
         center.add(velocity);
         setCenter(center);
-
-        resolveDamage();
 	}
 
-    public void collideWith(Collideable e){}
+    public void collideWith(Collideable e){
+        if (e.getClass().equals(Ship.class)) {
+            ((Ship) e).takeDamage(100);
+            takeDamage(100);
+            //ToDo: Bounce ships away from each other.
+        }
+
+    }
 
     private void shoot() {
         if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
@@ -62,20 +72,9 @@ public class Ship
             Pirates.addCannonball(cannonball);
         }
     }
-	
-	private void takeDamage() {
-		hitPoints = hitPoints - 100;
-	}
-	
-	//might be used to make damage more dynamic
-	private void takeDamage(int damage) {
-        hitPoints = hitPoints - damage;
-    }
 
-    public void resolveDamage() {
-        for (Entity e : collidedWith()) {
-            takeDamage();
-        }
+	public void takeDamage(int damage) {
+        hitPoints = hitPoints - damage;
     }
 
     public boolean isColliding(Collideable e) {
@@ -106,16 +105,6 @@ public class Ship
         }
 
         return false;
-    }
-
-    public ArrayList<Entity> collidedWith() {
-        ArrayList<Entity> collided = new ArrayList<>();
-        for (Cannonball c : Pirates.getCannonballs()) {
-            if (isColliding(c)) {
-                collided.add(c);
-            }
-        }
-        return collided;
     }
     
     public void kill() {
