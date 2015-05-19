@@ -10,17 +10,21 @@ public class Pirates {
 
     private static ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
     private static ArrayList<Cannonball> cannonballs = new ArrayList<Cannonball>();
+    private static ArrayList<Ship> ships = new ArrayList<Ship>();
     private static Window window;
     public static final int WINDOW_HEIGHT = 1000, WINDOW_WIDTH = 1700;
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException {
 
         window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, new KeyListener());
 
+        startGame();
+    }
+
+    private static void startGame() throws InterruptedException {
         //Create ships
         Integer[] keysShip1 = new Integer[] {87,83,65,68,86};
         Integer[] keysShip2 = new Integer[] {38,40,37,39,96};
-        ArrayList<Ship> ships = new ArrayList<Ship>();
         ships.add(new Ship(new Point(50,50),pressedKeys,Arrays.asList(keysShip1)));
         ships.add(new Ship(new Point(100,100),pressedKeys,Arrays.asList(keysShip2)));
         window.add(ships.get(0));
@@ -38,20 +42,24 @@ public class Pirates {
         long timeDiff;
         long lastTime = System.currentTimeMillis(); // System.currentTimeMillis() returns a long
 
-        while (true){
-			// First loop iteration might be strange if the initial value of lastTime is wrong
-			timeDiff = System.currentTimeMillis() - lastTime;
-			lastTime = System.currentTimeMillis();
-            for (Ship s:ships) {
+        while (ships.size()>1){
+            // First loop iteration might be strange if the initial value of lastTime is wrong
+            timeDiff = System.currentTimeMillis() - lastTime;
+            lastTime = System.currentTimeMillis();
+
+            //make clones of lists that can be modified at other places
+            ArrayList<Cannonball> cannonballsClone = (ArrayList<Cannonball>)cannonballs.clone();
+            ArrayList<Ship> shipsClone = (ArrayList<Ship>) ships.clone();
+            for (Ship s:shipsClone) {
                 s.update((int)timeDiff); //each loop shouldn't take more time than an int can hold
             }
 
-            ArrayList<Cannonball> cannonballsClone = (ArrayList<Cannonball>)cannonballs.clone();
+
             for(Cannonball c:cannonballsClone) {
-				c.update((int)timeDiff);
+                c.update((int)timeDiff);
 
                 //Do cannonball collisions
-                for (Ship s:ships)
+                for (Ship s:shipsClone)
                     if (s.isColliding(c))
                         c.collideWith(s);
                 for (Island island:islands) {
@@ -63,16 +71,16 @@ public class Pirates {
             //Do other collisions
 
             for (Island island:islands) {
-                for (Ship s:ships)
+                for (Ship s:shipsClone)
                     if (s.isColliding(island))
                         island.collideWith(s);
             }
 
-            for (int i = 0; i < ships.size()-1; i++) {
-                for (int j = i+1;j<ships.size();j++) {
-                    if (ships.get(i).isColliding(ships.get(j))) {
-                        ships.get(i).collideWith(ships.get(j));
-                        ships.get(j).collideWith(ships.get(i));
+            for (int i = 0; i < shipsClone.size()-1; i++) {
+                for (int j = i+1;j<shipsClone.size();j++) {
+                    if (shipsClone.get(i).isColliding(shipsClone.get(j))) {
+                        shipsClone.get(i).collideWith(shipsClone.get(j));
+                        shipsClone.get(j).collideWith(shipsClone.get(i));
                     }
                 }
             }
@@ -90,6 +98,11 @@ public class Pirates {
     public static void remove(Cannonball c) {
         cannonballs.remove(c);
         window.remove(c);
+    }
+
+    public static void remove(Ship s) {
+        ships.remove(s);
+        window.remove(s);
     }
 
     static class KeyListener implements java.awt.event.KeyListener {

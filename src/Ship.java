@@ -75,6 +75,10 @@ public class Ship
 
 	public void takeDamage(int damage) {
         hitPoints = hitPoints - damage;
+        if (hitPoints <= 0){
+            kill();
+            Pirates.remove(this);
+        }
     }
 
     public boolean isColliding(Collideable e) {
