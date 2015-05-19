@@ -56,6 +56,10 @@ public class Ship
         setCenter(center);
 	}
 
+	public int getHitPoints() {
+		return hitPoints;
+	}
+
     public void collideWith(Collideable e){
         if (e.getClass().equals(Ship.class)) {
             Ship s = (Ship) e;

@@ -29,6 +29,8 @@ public class Pirates {
         ships.add(new Ship(new Point(100,100),pressedKeys,Arrays.asList(keysShip2)));
         window.add(ships.get(0));
         window.add(ships.get(1));
+        HpDisplay hpd = new HpDisplay(ships);
+        window.add(hpd);
 
         //Create Islands
         Random random = new Random();
