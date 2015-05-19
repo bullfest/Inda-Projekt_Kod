@@ -109,10 +109,9 @@ public class Island
     public void computeCollisionPoints() {
         collisionPoints = new ArrayList<Point>();
         Point from = hull.get(hull.size()-1);
-        for (int i = 0; i < hull.size(); i++) {
-            Point to = hull.get(i);
+        for (Point to : hull) {
             Point edge = new Point(to);
-            edge.add(from,-1);
+            edge.add(from, -1);
             Point normalizedEdge = new Point(edge);
             normalizedEdge.normalize();
             Point edgeIterator = new Point(normalizedEdge);
@@ -155,6 +154,10 @@ public class Island
         } else if (e.getClass().equals(Ship.class)) {
             Ship s = (Ship) e;
             s.takeDamage(50);
+
+            //Bounce away ship
+
+
             //ToDo bounce ship
         }
     }

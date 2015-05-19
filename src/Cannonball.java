@@ -13,7 +13,7 @@ public class Cannonball
     private Ship shotBy;
 	
     public Cannonball(Point p, double angle, Ship shotBy) {
-        super(p, "../resources/pictures/cannonball.png");
+        super(p, "resources/pictures/cannonball.png");
         velocity = new Point(0.5, 0); // Length of vector is not yet decided and can change
         setAngle(angle);
         this.shotBy = shotBy;
