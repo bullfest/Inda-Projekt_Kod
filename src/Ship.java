@@ -58,11 +58,13 @@ public class Ship
 
     public void collideWith(Collideable e){
         if (e.getClass().equals(Ship.class)) {
-            ((Ship) e).takeDamage(100);
-            takeDamage(100);
-            //ToDo: Bounce ships away from each other.
+            Ship s = (Ship) e;
+            s.takeDamage(100);
+            //ToDo: Bounce ships away from each other.          
+            Point bounce = new Point(getCenterPos());
+            bounce.add(s.getCenterPos(), -1);
+            s.addToVelocity(bounce);
         }
-
     }
 
     private void shoot() {
