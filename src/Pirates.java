@@ -31,7 +31,6 @@ public class Pirates {
             window.add(islands.get(i));
         }
 
-
         window.add(ship1);
         window.add(ship2);
 
@@ -45,8 +44,10 @@ public class Pirates {
             ArrayList<Cannonball> cannonballsClone = (ArrayList<Cannonball>)cannonballs.clone();
             for(Cannonball c:cannonballsClone) {
 				c.update((int)timeDiff);
+
+                //Do cannonball collisions
                 if (ship1.isColliding(c))
-                    c.collideWith(c);
+                    c.collideWith(ship1);
                 if (ship2.isColliding(c))
                     c.collideWith(ship2);
                 for (Island island:islands) {
@@ -54,6 +55,8 @@ public class Pirates {
                         island.collideWith(c);
                 }
             }
+
+            //Do other collisions
 
             for (Island island:islands) {
                 if (ship1.isColliding(island))
@@ -81,10 +84,6 @@ public class Pirates {
     public static void remove(Cannonball c) {
         cannonballs.remove(c);
         window.remove(c);
-    }
-
-    public static ArrayList<Cannonball> getCannonballs() {
-        return cannonballs;
     }
 
     static class KeyListener implements java.awt.event.KeyListener {
