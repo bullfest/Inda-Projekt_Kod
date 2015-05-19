@@ -62,7 +62,10 @@ public class Ship
             takeDamage(100);
             //ToDo: Bounce ships away from each other.
         }
+    }
 
+    public void addToVelocity(Point p) {
+        velocity.add(p);
     }
 
     private void shoot() {
