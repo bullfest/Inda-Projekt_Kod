@@ -13,7 +13,7 @@ public abstract class Drawable {
     double angle = 0;
     BufferedImage image;
 
-    public Drawable() {    }
+    public Drawable() {}
 
     public Drawable(Point p, String imagePath) {
         position = p;
