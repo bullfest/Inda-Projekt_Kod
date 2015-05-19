@@ -67,6 +67,10 @@ public class Ship
         }
     }
 
+    public void addToVelocity(Point p) {
+        velocity.add(p);
+    }
+
     private void shoot() {
         if(System.currentTimeMillis()-lastShot > SHOT_COOLDOWN) {
             lastShot = System.currentTimeMillis();

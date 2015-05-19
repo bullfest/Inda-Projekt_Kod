@@ -30,13 +30,11 @@ public class Cannonball
 	}
 
     public boolean isColliding(Collideable e) {
-
-        //If distance between e's collisionspoints and cannonballs center ~<7
         List<Point> othersPoints = e.getCollisionPoints();
         for (Point p : othersPoints) {
             double dx = p.getX()-getCenterPos().getX();
             double dy = p.getY()-getCenterPos().getY();
-            if (dx*dx + dy*dy < 50)
+            if (dx*dx + dy*dy < 50) //If distance between e's collisionpoints and cannonballs center ~<7
                 return true;
         }
 
@@ -47,6 +45,8 @@ public class Cannonball
         Point center = getCenterPos();
         center.add(velocity, timeDiff);
 		setCenter(center);
+
+        //Check if cannonball is leaving the screen
         if (center.getX()>Pirates.WINDOW_WIDTH+image.getWidth()
                 || center.getX() < -image.getWidth()
                 || center.getY() > Pirates.WINDOW_HEIGHT+image.getHeight()
@@ -61,9 +61,11 @@ public class Cannonball
             if (e.equals(shotBy)) // you can't be hit by your own bullets
                 return;
             ((Ship) e).takeDamage(100);
+            kill();
             Pirates.remove(this);
         }
         if (e.getClass().equals(Island.class)) {
+            kill();
             Pirates.remove(this);
         }
     }
