@@ -20,7 +20,7 @@ public class Ship
     List<Integer> keys;
 
     public Ship(Point p, ArrayList<Integer> pressedKeys,List<Integer> keys){
-        super(p,  "resources/pictures/ship.png");
+        super(p,  "../resources/pictures/ship.png");
         this.pressedKeys = pressedKeys;
         this.keys = keys;
 		hitPoints  = 1000; // Initial value might change
@@ -61,8 +61,9 @@ public class Ship
             Ship s = (Ship) e;
             s.takeDamage(100);
             //ToDo: Bounce ships away from each other.          
-            Point bounce = new Point(getCenterPos());
-            bounce.add(s.getCenterPos(), -1);
+            Point bounce = new Point(s.getCenterPos());
+            bounce.add(getCenterPos(), -1);
+            bounce.normalize();
             s.addToVelocity(bounce);
         }
     }

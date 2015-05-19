@@ -13,7 +13,7 @@ public class Cannonball
     private Ship shotBy;
 	
     public Cannonball(Point p, double angle, Ship shotBy) {
-        super(p, "resources/pictures/cannonball.png");
+        super(p, "../resources/pictures/cannonball.png");
         velocity = new Point(0.5, 0); // Length of vector is not yet decided and can change
         setAngle(angle);
         this.shotBy = shotBy;
@@ -58,9 +58,14 @@ public class Cannonball
     @Override
     public void collideWith(Collideable e) {
         if (e.getClass().equals(Ship.class)) {
-            if (e.equals(shotBy)) // you can't be hit by your own bullets
+			Ship s = (Ship) e;
+            if (s.equals(shotBy)) // you can't be hit by your own bullets
                 return;
-            ((Ship) e).takeDamage(100);
+            s.takeDamage(100);
+            Point bounce = new Point(s.getCenterPos());
+            bounce.add(getCenterPos(), -1);
+            bounce.normalize();
+            s.addToVelocity(bounce);
             kill();
             Pirates.remove(this);
         }
