@@ -11,10 +11,10 @@ public class Ship
 	private int hitPoints;
     private Point velocity = new Point(0,0);
     private ArrayList<Integer> pressedKeys;
-    private long lastShot;
+    private long lastShot, lastDamage;
     
     private final double ACCELERATION_PER_SECOND = 2, ROTATION_PER_SECOND = 60,/*Degrees*/
-							SHOT_COOLDOWN = 700;
+							SHOT_COOLDOWN = 700, DAMAGE_COOLDOWN = 1000;
 
     // {Up,Down,left,right,shoot}
     List<Integer> keys;
@@ -34,8 +34,8 @@ public class Ship
         //ToDo: make so that ship can't leave screen.
         velocity.multiply(1-0.75*(timeDiff/1000.0));
         Point acceleration = new Point(0,0);
-
-        for (Integer pressedKey : pressedKeys) {
+		ArrayList<Integer> pressedKeysClone = (ArrayList<Integer>) pressedKeys.clone();
+        for (Integer pressedKey : pressedKeysClone) {
             int index = keys.indexOf(pressedKey);
             if (index == 0) // Up
                 acceleration.add(new Point(ACCELERATION_PER_SECOND, 0));
@@ -69,7 +69,7 @@ public class Ship
     }
 
     private void shoot() {
-        if(System.currentTimeMillis()-lastShot>SHOT_COOLDOWN) {
+        if(System.currentTimeMillis()-lastShot > SHOT_COOLDOWN) {
             lastShot = System.currentTimeMillis();
             Cannonball cannonball = new Cannonball(getCenterPos(),getAngle(),this);
             Pirates.addCannonball(cannonball);
@@ -77,11 +77,14 @@ public class Ship
     }
 
 	public void takeDamage(int damage) {
-        hitPoints = hitPoints - damage;
-        if (hitPoints <= 0){
-            kill();
-            Pirates.remove(this);
-        }
+		if(System.currentTimeMillis()-lastDamage > DAMAGE_COOLDOWN) {
+			lastDamage = System.currentTimeMillis();
+			hitPoints = hitPoints - damage;
+			if (hitPoints <= 0){
+				kill();
+				Pirates.remove(this);
+			}
+		}
     }
 
     public boolean isColliding(Collideable e) {
