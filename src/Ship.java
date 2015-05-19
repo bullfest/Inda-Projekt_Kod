@@ -20,7 +20,7 @@ public class Ship
     List<Integer> keys;
 
     public Ship(Point p, ArrayList<Integer> pressedKeys,List<Integer> keys){
-        super(p,  "../resources/pictures/ship.png");
+        super(p,  "resources/pictures/ship.png");
         this.pressedKeys = pressedKeys;
         this.keys = keys;
 		hitPoints  = 1000; // Initial value might change
@@ -121,9 +121,7 @@ public class Ship
         return false;
     }
     
-    public void kill() {
-		//TODO
-    }
+    public void kill() {}
 
     @Override
     public ArrayList<Point> getCollisionPoints() {
