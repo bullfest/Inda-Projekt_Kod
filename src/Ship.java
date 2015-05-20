@@ -31,7 +31,6 @@ public class Ship
      * @param timeDiff Time since the last frame was made.
      */
     public void update(int timeDiff) {
-        //ToDo: make so that ship can't leave screen.
         velocity.multiply(1-0.75*(timeDiff/1000.0));
         Point acceleration = new Point(0,0);
 		ArrayList<Integer> pressedKeysClone = (ArrayList<Integer>) pressedKeys.clone();
@@ -64,7 +63,7 @@ public class Ship
         if (e.getClass().equals(Ship.class)) {
             Ship s = (Ship) e;
             s.takeDamage(100);
-            //ToDo: Bounce ships away from each other.          
+
             Point bounce = new Point(s.getCenterPos());
             bounce.add(getCenterPos(), -1);
             bounce.normalize();

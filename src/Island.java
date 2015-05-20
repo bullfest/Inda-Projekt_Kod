@@ -188,8 +188,6 @@ public class Island
 
             s.addToVelocity(perpToSide);
             s.addToVelocity(parallelToSide);
-
-            //ToDo bounce ship
         }
     }
 }
