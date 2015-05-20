@@ -95,14 +95,13 @@ public class Island
     }
 
     public void draw(Graphics2D g2d) {
-        g2d.setColor(Color.RED);
-        Point lastPoint = hull.get(0);
-        for (int i = 1; i < hull.size(); i++) {
-            Point thisPoint = hull.get(i);
-            g2d.drawLine((int)lastPoint.getX(),(int)lastPoint.getY(),(int)thisPoint.getX(),(int)thisPoint.getY());
-            lastPoint = thisPoint;
+        g2d.setColor(new Color(0x458B00));
+        int[] xVal = new int[hull.size()], yVal = new int[hull.size()];
+        for (int i = 0; i < hull.size(); i++) {
+            xVal[i] = (int)hull.get(i).getX();
+            yVal[i] = (int)hull.get(i).getY();
         }
-        g2d.drawLine((int)lastPoint.getX(),(int)lastPoint.getY(),(int)hull.get(0).getX(),(int)hull.get(0).getY());
+        g2d.fillPolygon(xVal, yVal, xVal.length);
     }
 
     private List<Point> collisionPoints;
