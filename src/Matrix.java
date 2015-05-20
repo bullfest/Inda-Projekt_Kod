@@ -23,20 +23,38 @@ public class Matrix {
         this.data = data.clone();
     }
 
+    /**
+     * @return The number of rows in the matrix
+     */
     public int getRows() {
         return data.length;
     }
 
+    /**
+     * @return The number of Columns in the matrix
+     */
     public int getCols() {
         return data[0].length;
     }
 
+    /**
+     * Sets the element on row m and column n to value
+     * @param m the row
+     * @param n the column
+     * @param value the new value
+     */
     public void setElem(int m, int n, double value) {
         if (m <0 || n<0 || m > getRows()-1 || n>getCols()-1)
             throw new IllegalArgumentException("m and n has to be within the matrix.");
         data[m][n] = value;
     }
 
+    /**
+     * retrieves the element from row m and column n
+     * @param m the row
+     * @param n the column
+     * @return the element on row m and column n
+     */
     public double getElem(int m, int n) {
         if (m <0 || n<0 || m > getRows()-1 || n>getCols()-1)
             throw new IllegalArgumentException("m and n has to be within the matrix.");
@@ -44,13 +62,13 @@ public class Matrix {
     }
 
     /**
-     * Computes the matrix A that's a result of A = B+k*M
-     * where B is this(invoked on) matrix and M is the provided matrix.
+     * Add the matrix M to this matrix k times (A = A+k*M)
+     * where A is this matrix
      *
-     * (Hint) if k =-1 then A = B-M
+     * (Note) if k =-1 then A = A-M
      *
-     * @param M The matrix to add to this
-     * @param k The coefficient for this matrix
+     * @param M The matrix to add to this matrix k times
+     * @param k The coefficient for M
      */
     public void add(Matrix M, double k) {
         if (M.getCols() != this.getCols() || M.getRows() != this.getRows())
@@ -86,6 +104,11 @@ public class Matrix {
         return res;
     }
 
+    /**
+     * Computes the multiplication k*A where A is this matrix
+     * @param k the coefficient for this matrix
+     * @return k*A
+     */
     public Matrix multiply(double k) {
         Matrix res = new Matrix(data);
         for (int i = 0; i < getRows(); i++) {
@@ -96,14 +119,25 @@ public class Matrix {
         return res;
     }
 
+    /**
+     * Retrieve the m*n (row*col) matrix with the data in this matrix
+     * @return This matrix's data
+     */
     protected double[][] getData() {
         return data;
     }
 
+    /**
+     * Set the data of this array to the data in a (row*col) two dimenional array.
+     * @param data The new data
+     */
     protected void setData(double[][] data) {
         this.data = data;
     }
 
+    /**
+     * Returns a transposed version of this matrix
+     */
     public Matrix transpose() {
         Matrix res = new Matrix(getCols(),getRows());
         for (int i = 0; i < getRows(); i++) {
