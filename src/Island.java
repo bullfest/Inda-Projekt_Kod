@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.*;
 import java.util.List;
 
@@ -147,17 +148,40 @@ public class Island
         return false;
     }
 
+    long lastShipCollision = 0;
+
     @Override
     public void collideWith(Collideable e) {
         if (e.getClass().equals(Cannonball.class)) {
             Pirates.remove((Cannonball)e);
-        } else if (e.getClass().equals(Ship.class)) {
+        } else if (e.getClass().equals(Ship.class) && System.currentTimeMillis()-lastShipCollision > 40) {
+            lastShipCollision = System.currentTimeMillis();
             Ship s = (Ship) e;
             s.takeDamage(50);
 
             //Bounce away ship
+            double minDist = Double.MAX_VALUE;
+            int nearestPointIndex = 0; //Will be discarded in first iteration
+            for (int i = 0; i < collisionPoints.size(); i++) {
+                Point p = collisionPoints.get(i);
+                double dx = s.getCenterPos().getX() - p.getX();
+                double dy = s.getCenterPos().getY() - p.getY();
+                if (dx * dx + dy * dy < minDist) { //No need for sqrt, takes extra time
+                    minDist = dx * dx + dy * dy;
+                    nearestPointIndex = i;
+                }
+            }
 
+            //create a vector parallel to the side we collided with (Might not be entirely correct in corners
+            //but it'll look somewhat right.
+            Point parallelToSide = new Point(collisionPoints.get(nearestPointIndex));
+            parallelToSide.add(collisionPoints.get((nearestPointIndex+1)%collisionPoints.size()),-1);
+            Point perpToSide = new Point(parallelToSide.getY(),-parallelToSide.getX());
 
+            Point sVelo = s.getVelocity();
+            Point velocityNewBasis = sVelo.toBasis(parallelToSide, perpToSide);
+            perpToSide.multiply(velocityNewBasis.getY()*-1.3);
+            s.addToVelocity(perpToSide);
             //ToDo bounce ship
         }
     }

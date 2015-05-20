@@ -72,6 +72,10 @@ public class Ship
         }
     }
 
+    public Point getVelocity() {
+        return new Point(velocity); //nobody should be able to edit it directly
+    }
+
     public void addToVelocity(Point p) {
         velocity.add(p);
     }
