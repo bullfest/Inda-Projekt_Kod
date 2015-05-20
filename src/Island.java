@@ -14,6 +14,10 @@ public class Island
     private static final int MAX_ISLAND_RADIUS = 100;
     private ArrayList<Point> hull = new ArrayList<Point>();
 
+    public Island (Point[] corners) {
+        hull = new ArrayList<Point>(Arrays.asList(corners));
+    }
+
     public Island() {
         Random random = new Random();
         ArrayList<Point> points = new ArrayList<Point>();
@@ -180,7 +184,11 @@ public class Island
             Point sVelo = s.getVelocity();
             Point velocityNewBasis = sVelo.toBasis(parallelToSide, perpToSide);
             perpToSide.multiply(velocityNewBasis.getY()*-1.3);
+            parallelToSide.multiply(velocityNewBasis.getX()*-0.3);
+
             s.addToVelocity(perpToSide);
+            s.addToVelocity(parallelToSide);
+
             //ToDo bounce ship
         }
     }

@@ -11,7 +11,9 @@ public class Pirates {
     private static ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
     private static ArrayList<Cannonball> cannonballs = new ArrayList<Cannonball>();
     private static ArrayList<Ship> ships = new ArrayList<Ship>();
+    private static ArrayList<Island> islands = new ArrayList<Island>();
     private static Window window;
+
     public static final int WINDOW_HEIGHT = 1000, WINDOW_WIDTH = 1700;
 
     public static void main(String[] args) throws InterruptedException {
@@ -26,7 +28,8 @@ public class Pirates {
         Integer[] keysShip1 = new Integer[] {87,83,65,68,86};
         Integer[] keysShip2 = new Integer[] {38,40,37,39,96};
         ships.add(new Ship(new Point(50,50),pressedKeys,Arrays.asList(keysShip1)));
-        ships.add(new Ship(new Point(100,100),pressedKeys,Arrays.asList(keysShip2)));
+        ships.add(new Ship(new Point(WINDOW_WIDTH-70,WINDOW_HEIGHT-100),pressedKeys,Arrays.asList(keysShip2)));
+        ships.get(1).setAngle(180);
         window.add(ships.get(0));
         window.add(ships.get(1));
         HpDisplay hpd = new HpDisplay(ships);
@@ -34,12 +37,18 @@ public class Pirates {
 
         //Create Islands
         Random random = new Random();
-        ArrayList<Island> islands = new ArrayList<Island>();
         int numberOfIslands = random.nextInt(10);
         for (int i = 0; i < numberOfIslands; i++) {
             islands.add(new Island());
             window.add(islands.get(i));
         }
+
+        Point topLeft = new Point(0,0), topRight = new Point(WINDOW_WIDTH,0),
+                bottomLeft = new Point(0,WINDOW_HEIGHT), bottomRight = new Point(WINDOW_WIDTH,WINDOW_HEIGHT);
+        islands.add(new Island(new Point[] {topLeft,topRight}));
+        islands.add(new Island(new Point[] {topLeft, bottomLeft}));
+        islands.add(new Island(new Point[] {bottomLeft, bottomRight}));
+        islands.add(new Island(new Point[] {topRight, bottomRight}));
 
         long timeDiff;
         long lastTime = System.currentTimeMillis(); // System.currentTimeMillis() returns a long
