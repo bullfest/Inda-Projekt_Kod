@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,18 +13,34 @@ public class Pirates {
     private static ArrayList<Cannonball> cannonballs = new ArrayList<Cannonball>();
     private static ArrayList<Ship> ships = new ArrayList<Ship>();
     private static ArrayList<Island> islands = new ArrayList<Island>();
+    private static JFrame mainMenu = new JFrame("MainMenu");
     private static Window window;
 
     public static final int WINDOW_HEIGHT = 1000, WINDOW_WIDTH = 1700;
 
     public static void main(String[] args) throws InterruptedException {
 
-        window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, new KeyListener());
+        startGame();
 
+        //startGame() doesn't work when called from MainMenu.java
+        //makeMenu(mainMenu);
+    }
+
+    public static void makeMenu(JFrame mainMenu) {
+        mainMenu.setContentPane(new MainMenu().getContentPane());
+        mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainMenu.pack();
+        mainMenu.setVisible(true);
+    }
+
+    public static void clickStart() throws InterruptedException{
         startGame();
     }
 
     private static void startGame() throws InterruptedException {
+        mainMenu.setVisible(false);
+        window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, new KeyListener());
+
         //Create ships
         Integer[] keysShip1 = new Integer[] {87,83,65,68,86};
         Integer[] keysShip2 = new Integer[] {38,40,37,39,96};
@@ -99,6 +116,9 @@ public class Pirates {
             window.repaint();
             Thread.sleep(10);
         }
+
+        window.dispose();
+        mainMenu.setVisible(true);
     }
     
     public static void addCannonball(Cannonball c) {
