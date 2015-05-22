@@ -18,4 +18,6 @@ public interface Collideable {
 
     public List<Point> getCollisionPoints();
 
+    public Point getCenterPos();
+
 }

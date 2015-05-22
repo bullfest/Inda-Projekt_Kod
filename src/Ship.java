@@ -13,7 +13,7 @@ public class Ship
     private ArrayList<Integer> pressedKeys;
     private long lastShot, lastDamage;
     
-    private final double ACCELERATION_PER_SECOND = 2, ROTATION_PER_SECOND = 60,/*Degrees*/
+    private final double ACCELERATION_PER_SECOND = 5, ROTATION_PER_SECOND = 60,/*Degrees*/
 							SHOT_COOLDOWN = 700, DAMAGE_COOLDOWN = 1000;
 
     // {Up,Down,left,right,shoot}
@@ -99,11 +99,11 @@ public class Ship
     }
 
     public boolean isColliding(Collideable e) {
-        /*double dx = (getCenterPos().getX()-e.getCenterPos().getX());
+        double dx = (getCenterPos().getX()-e.getCenterPos().getX());
         double dy = (getCenterPos().getY()-e.getCenterPos().getY());
-        if (dx*dx + dy*dy > 2500) //distance > 50
+        if (dx*dx + dy*dy > 250000) //distance > 500
             return false; //Way too big distance, no risk of collision
-        */
+
         Point forward = new Point(1,0);
         forward.rotate(angle);
 
