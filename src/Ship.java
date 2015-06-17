@@ -49,10 +49,12 @@ public class Ship
         }
         acceleration.rotate(getAngle());
         velocity.add(acceleration,timeDiff/1000.0);
-        
+
         Point center = getCenterPos();
         center.add(velocity);
-        setCenter(center);
+        if (center.getY()>getImage().getHeight()/2 && center.getY() < Pirates.WINDOW_HEIGHT-getImage().getHeight()/2 && //Within window Y bounds
+                center.getX() > getImage().getHeight()/2 && center.getX() < Pirates.WINDOW_WIDTH - getImage().getHeight()/2)
+            setCenter(center);
 	}
 
 	public int getHitPoints() {

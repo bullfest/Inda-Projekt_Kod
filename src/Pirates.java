@@ -22,8 +22,6 @@ public class Pirates {
 
         window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, new KeyListener());
         showMenu();
-
-
     }
 
     public static void hideMenu() {
@@ -40,6 +38,8 @@ public class Pirates {
     }
 
     public static void startGame() throws InterruptedException {
+        reset();
+        window.reset();
 
         //Create ships
         Integer[] keysShip1 = new Integer[] {87,83,65,68,86};
@@ -116,6 +116,12 @@ public class Pirates {
             window.repaint();
             Thread.sleep(10);
         }
+    }
+
+    private static void reset() {
+        cannonballs = new ArrayList<Cannonball>();
+        ships = new ArrayList<Ship>();
+        islands = new ArrayList<Island>();
     }
     
     public static void addCannonball(Cannonball c) {

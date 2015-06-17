@@ -26,6 +26,8 @@ public class Window extends JFrame {
         frame.remove(drawable);
     }
 
+    public void reset() {frame.reset();}
+
     class Frame extends JPanel {
         HashSet<Drawable> drawables = new HashSet<Drawable>();
 
@@ -52,6 +54,10 @@ public class Window extends JFrame {
             for (Drawable d:drawablesSnapshot) {
                 d.draw(g2d);
             }
+        }
+
+        void reset() {
+            drawables = new HashSet<Drawable>();
         }
     }
 
